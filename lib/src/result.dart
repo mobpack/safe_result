@@ -22,10 +22,10 @@ sealed class Result<T> {
   bool get isError;
 
   /// Transforms the Result into another Result using the provided functions
-  Result<U> fold<U>(
-    U Function(T value) onOk,
-    U Function(Exception error) onError,
-  );
+  Result<U> fold<U>({
+    required U Function(T value) onOk,
+    required U Function(Exception error) onError,
+  });
 
   /// Executes the provided callback if the result is Ok
   Result<T> onSuccess(void Function(T value) action);
@@ -60,10 +60,10 @@ final class Ok<T> extends Result<T> {
   bool get isError => false;
 
   @override
-  Result<U> fold<U>(
-    U Function(T value) onOk,
-    U Function(Exception error) onError,
-  ) {
+  Result<U> fold<U>({
+    required U Function(T value) onOk,
+    required U Function(Exception error) onError,
+  }) {
     try {
       return Result.ok(onOk(value));
     } on Exception catch (e) {
@@ -114,10 +114,10 @@ final class Error<T> extends Result<T> {
   bool get isError => true;
 
   @override
-  Result<U> fold<U>(
-    U Function(T value) onOk,
-    U Function(Exception error) onError,
-  ) {
+  Result<U> fold<U>({
+    required U Function(T value) onOk,
+    required U Function(Exception error) onError,
+  }) {
     try {
       return Result.ok(onError(error));
     } on Exception catch (e) {

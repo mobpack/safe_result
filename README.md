@@ -16,7 +16,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  safe_result: ^1.1.1
+  safe_result: ^1.1.2
 ```
 
 ## Usage

@@ -1,3 +1,12 @@
+## 1.1.2
+
+- Fixed `fold` method to return non-nullable `Result<U>` with required handlers
+- Added comprehensive test cases for `fold` method:
+  - Success and error transformations
+  - Exception handling
+  - Type transformations
+- Updated documentation to match new `fold` method signature
+
 ## 1.1.1
 
 - Added comprehensive test suite for Result type and extensions

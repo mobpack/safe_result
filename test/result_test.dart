@@ -69,5 +69,58 @@ void main() {
         expect(result.getOrElse(0), equals(0));
       });
     });
+
+    group('fold', () {
+      test('transforms Ok value using onOk handler', () {
+        final result = Result<int>.ok(42);
+        final folded = result.fold(
+          onOk: (value) => value.toString(),
+          onError: (error) => 'error',
+        );
+        expect(folded, isA<Ok<String>>());
+        expect((folded as Ok<String>).value, equals('42'));
+      });
+
+      test('transforms Error value using onError handler', () {
+        final error = Exception('test error');
+        final result = Result<int>.error(error);
+        final folded = result.fold(
+          onOk: (value) => value.toString(),
+          onError: (error) => 'error: ${error.toString()}',
+        );
+        expect(folded, isA<Ok<String>>());
+        expect((folded as Ok<String>).value, startsWith('error: Exception'));
+      });
+
+      test('propagates exception from onOk handler', () {
+        final result = Result<int>.ok(42);
+        final folded = result.fold(
+          onOk: (value) => throw Exception('onOk error'),
+          onError: (error) => 'error',
+        );
+        expect(folded, isA<Error<String>>());
+        expect((folded as Error<String>).error.toString(), contains('onOk error'));
+      });
+
+      test('propagates exception from onError handler', () {
+        final result = Result<int>.error(Exception('original error'));
+        final folded = result.fold(
+          onOk: (value) => 'ok',
+          onError: (error) => throw Exception('onError error'),
+        );
+        expect(folded, isA<Error<String>>());
+        expect((folded as Error<String>).error.toString(), contains('onError error'));
+      });
+
+      test('supports type transformation', () {
+        final result = Result<int>.ok(42);
+        final folded = result.fold<bool>(
+          onOk: (value) => value > 0,
+          onError: (error) => false,
+        );
+        expect(folded, isA<Ok<bool>>());
+        expect((folded as Ok<bool>).value, isTrue);
+      });
+    });
   });
 }
