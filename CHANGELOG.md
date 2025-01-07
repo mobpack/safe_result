@@ -1,3 +1,14 @@
+## 1.1.3
+
+- Added comprehensive examples:
+  - Pattern matching with switch expressions
+  - Value transformations and chaining
+  - Form validation patterns
+  - Async operation handling
+  - Error handling strategies
+  - Nullable value handling
+- Improved documentation with practical use cases
+
 ## 1.1.2
 
 - Fixed `fold` method to return non-nullable `Result<U>` with required handlers
