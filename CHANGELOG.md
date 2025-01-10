@@ -1,3 +1,10 @@
+## 1.1.4
+
+* Add value getter for easier access to Ok values
+* Add equality operators for better comparison
+* Improve error handling in map and fold methods
+* Update example to use direct value access
+
 ## 1.1.3
 
 - Added comprehensive examples:
