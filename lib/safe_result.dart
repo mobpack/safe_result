@@ -1,5 +1,5 @@
 /// A Result type for handling success and error cases in a type-safe way.
-library safe_result;
+library;
 
 export 'src/result.dart';
 export 'src/extensions/future_result_extension.dart';

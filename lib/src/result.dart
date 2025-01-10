@@ -42,6 +42,7 @@ final class Ok<T> extends Result<T> {
   const Ok._(this.value);
 
   /// Returned value in result
+  @override
   final T value;
 
   @override

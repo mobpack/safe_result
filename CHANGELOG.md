@@ -1,3 +1,8 @@
+## 1.1.5
+
+- Added @override annotation for value getter in Ok class
+- Fixed documentation formatting
+
 ## 1.1.4
 
 * Add value getter for easier access to Ok values

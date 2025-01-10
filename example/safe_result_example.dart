@@ -218,7 +218,7 @@ void errorHandlingExample() {
 }
 
 void nullableExample() {
-  String? nullableName = null;
+  String? nullableName;
   String? validName = 'John';
 
   // Converting nullable to Result
