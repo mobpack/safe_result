@@ -32,6 +32,9 @@ sealed class Result<T> {
 
   /// Executes the provided callback if the result is Error
   Result<T> onFailure(void Function(Exception error) action);
+
+  /// Returns the value if the result is Ok
+  T get value => (this as Ok<T>).value;
 }
 
 /// Subclass of Result for values

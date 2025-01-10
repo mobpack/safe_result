@@ -79,28 +79,26 @@ void transformationExample() {
   print(stringified); // Result<String>.ok('Value is: 42')
 
   // Chaining transformations
-  final complex = result
-      .map((value) => value * 2)
-      .fold(
+  final complex = result.map((value) => value * 2).fold(
         onOk: (value) => value > 50 ? 'Large' : 'Small',
         onError: (error) => 'Error',
       );
   print(complex); // Result<String>.ok('Large')
 }
 
+// Data class for validation
+class User {
+  final String name;
+  final int age;
+  final String email;
+
+  User(this.name, this.age, this.email);
+
+  @override
+  String toString() => 'User(name: $name, age: $age, email: $email)';
+}
+
 void validationExample() {
-  // Data class for validation
-  class User {
-    final String name;
-    final int age;
-    final String email;
-
-    User(this.name, this.age, this.email);
-
-    @override
-    String toString() => 'User(name: $name, age: $age, email: $email)';
-  }
-
   // Validation functions returning Result
   Result<String> validateName(String name) {
     if (name.isEmpty) {
@@ -129,23 +127,24 @@ void validationExample() {
 
   // Combining multiple validations
   Result<User> createUser(String name, int age, String email) {
-    return validateName(name).fold(
-      onOk: (validName) => validateAge(age).fold(
-        onOk: (validAge) => validateEmail(email).fold(
-          onOk: (validEmail) => Result.ok(User(validName, validAge, validEmail)),
-          onError: (error) => Result.error(error),
-        ),
-        onError: (error) => Result.error(error),
-      ),
-      onError: (error) => Result.error(error),
-    );
+    final nameResult = validateName(name);
+    final ageResult = validateAge(age);
+    final emailResult = validateEmail(email);
+
+    if (nameResult.isError || ageResult.isError || emailResult.isError) {
+      return Result.error(Exception('Validation failed'));
+    } else {
+      return Result.ok(
+          User(nameResult.value, ageResult.value, emailResult.value));
+    }
   }
 
   // Example usage
   final validUser = createUser('John', 30, 'john@example.com');
   final invalidUser = createUser('', -5, 'invalid-email');
 
-  print(validUser); // Success: User(name: John, age: 30, email: john@example.com)
+  print(
+      validUser); // Success: User(name: John, age: 30, email: john@example.com)
   print(invalidUser); // Error: Exception: Name cannot be empty
 }
 
@@ -214,7 +213,8 @@ void errorHandlingExample() {
   }
 
   processResult(success); // Operation succeeded: 10
-  processResult(failure); // Operation failed: Exception: Value cannot be negative
+  processResult(
+      failure); // Operation failed: Exception: Value cannot be negative
 }
 
 void nullableExample() {
@@ -222,14 +222,14 @@ void nullableExample() {
   String? validName = 'John';
 
   // Converting nullable to Result
-  final nullResult = Result<String>.ok(nullableName).requireNotNull();
+  final nullResult = Result<String?>.ok(nullableName).requireNotNull();
   final validResult = Result<String>.ok(validName).requireNotNull();
 
   print(nullResult); // Error: Exception: Value is null
   print(validResult); // Ok: John
 
   // Custom error message
-  final withMessage = Result<String>.ok(nullableName)
+  final withMessage = Result<String?>.ok(nullableName)
       .requireNotNull('Custom error message for null value');
   print(withMessage); // Error: Exception: Custom error message for null value
 }
