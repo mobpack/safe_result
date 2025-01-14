@@ -16,7 +16,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  safe_result: ^1.1.3
+  safe_result: ^1.1.6
 ```
 
 ## Usage
@@ -44,6 +44,14 @@ final message = success.fold(
   onOk: (value) => 'Success: $value',
   onError: (error) => 'Error: $error',
 );
+
+// Safe error access with type checking
+try {
+  final error = failure.error; // Safe: failure is Error
+  print('Error occurred: $error');
+} on TypeError {
+  print('Cannot access error on Ok result');
+}
 
 // Handling nullable values
 final Result<String?> nullableResult = Result.ok(null);

@@ -35,6 +35,10 @@ sealed class Result<T> {
 
   /// Returns the value if the result is Ok
   T get value => (this as Ok<T>).value;
+
+  /// Returns the error if this is an [Error] result.
+  /// Throws a [TypeError] if this is an [Ok] result.
+  Exception get error => (this as Error<T>).error;
 }
 
 /// Subclass of Result for values

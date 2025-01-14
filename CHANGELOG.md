@@ -1,3 +1,9 @@
+## 1.1.6
+
+- Improved documentation for error getter to clarify TypeError behavior
+- Added test cases for error getter behavior
+- Enhanced example documentation
+
 ## 1.1.5
 
 - Added @override annotation for value getter in Ok class

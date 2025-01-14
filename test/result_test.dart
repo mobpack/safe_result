@@ -122,5 +122,18 @@ void main() {
         expect((folded as Ok<bool>).value, isTrue);
       });
     });
+
+    group('error getter', () {
+      test('returns error for Error result', () {
+        final exception = Exception('test error');
+        final result = Result<int>.error(exception);
+        expect(result.error, equals(exception));
+      });
+
+      test('throws TypeError when accessed on Ok result', () {
+        final result = Result<int>.ok(42);
+        expect(() => result.error, throwsA(isA<TypeError>()));
+      });
+    });
   });
 }
