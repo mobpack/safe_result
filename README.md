@@ -45,6 +45,20 @@ final message = success.fold(
   onError: (error) => 'Error: $error',
 );
 
+// Using when for pattern matching with specific return types
+final state = success.when(
+  ok: (user) => UserState(
+    isLoading: false,
+    user: user,
+    error: null,
+  ),
+  error: (error) => UserState(
+    isLoading: false,
+    user: null,
+    error: error,
+  ),
+);
+
 // Safe error access with type checking
 try {
   final error = failure.error; // Safe: failure is Error

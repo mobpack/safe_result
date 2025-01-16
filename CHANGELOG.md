@@ -1,3 +1,9 @@
+## 1.1.7
+
+- Added `when` method for pattern matching with specific return types
+- Enhanced documentation with examples for the new `when` method
+- Added test cases for `when` method behavior
+
 ## 1.1.6
 
 - Improved documentation for error getter to clarify TypeError behavior

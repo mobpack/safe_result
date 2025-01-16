@@ -135,5 +135,57 @@ void main() {
         expect(() => result.error, throwsA(isA<TypeError>()));
       });
     });
+
+    group('when', () {
+      test('calls ok handler for Ok value', () {
+        final result = Result<int>.ok(42);
+        final state = result.when(
+          ok: (value) => 'success: $value',
+          error: (error) => 'error: $error',
+        );
+        expect(state, equals('success: 42'));
+      });
+
+      test('calls error handler for Error value', () {
+        final error = Exception('test error');
+        final result = Result<int>.error(error);
+        final state = result.when(
+          ok: (value) => 'success: $value',
+          error: (error) => 'error: $error',
+        );
+        expect(state, startsWith('error: Exception'));
+      });
+
+      test('supports different return type', () {
+        final result = Result<String>.ok('user123');
+        final state = result.when(
+          ok: (value) => UserState(
+            isLoading: false,
+            userId: value,
+            error: null,
+          ),
+          error: (error) => UserState(
+            isLoading: false,
+            userId: null,
+            error: error,
+          ),
+        );
+        expect(state, isA<UserState>());
+        expect(state.userId, equals('user123'));
+        expect(state.error, isNull);
+      });
+    });
+  });
+}
+
+class UserState {
+  final bool isLoading;
+  final String? userId;
+  final Exception? error;
+
+  UserState({
+    required this.isLoading,
+    required this.userId,
+    required this.error,
   });
 }

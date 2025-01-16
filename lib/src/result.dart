@@ -33,6 +33,13 @@ sealed class Result<T> {
   /// Executes the provided callback if the result is Error
   Result<T> onFailure(void Function(Exception error) action);
 
+  /// Pattern matches on the result and returns a value based on whether the result
+  /// is Ok or Error
+  R when<R>({
+    required R Function(T value) ok,
+    required R Function(Exception error) error,
+  });
+
   /// Returns the value if the result is Ok
   T get value => (this as Ok<T>).value;
 
@@ -89,6 +96,14 @@ final class Ok<T> extends Result<T> {
   Result<T> onFailure(void Function(Exception error) action) => this;
 
   @override
+  R when<R>({
+    required R Function(T value) ok,
+    required R Function(Exception error) error,
+  }) {
+    return ok(value);
+  }
+
+  @override
   String toString() => 'Result<$T>.ok($value)';
 
   @override
@@ -140,6 +155,14 @@ final class Error<T> extends Result<T> {
   Result<T> onFailure(void Function(Exception error) action) {
     action(error);
     return this;
+  }
+
+  @override
+  R when<R>({
+    required R Function(T value) ok,
+    required R Function(Exception error) error,
+  }) {
+    return error(this.error);
   }
 
   @override
